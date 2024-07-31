@@ -12,7 +12,10 @@ permalink: /nextflow/
 
 # Part 1
 
-Part 1 of nextflow section...
+First, some useful links:
+
+- [Nextflow documentation](https://www.nextflow.io/docs/latest/index.html)
+- link to slides?
 
 # Part 2
 
