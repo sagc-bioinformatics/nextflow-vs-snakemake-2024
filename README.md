@@ -1,3 +1,4 @@
+# Nextflow vs Snakemake 2024
 
-# Installing jekyll was annoying...
 
+[https://sagc-bioinformatics.github.io/nextflow-vs-snakemake-2024/]()
