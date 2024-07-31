@@ -23,7 +23,8 @@ email: sagc@sahmri.com
 description: >- # this means to ignore newlines until "baseurl:"
   This is the homepage for our 2024 bioinformatics workflow managers workshop:
   Nextflow versus Snakemake!
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/nextflow-vs-snakemake-2024" # the subpath of your site, e.g. /blog
+url: "https://sagc-bioinformatics.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: SA_genomics
 github_username:  sagc-bioinformatics
 
