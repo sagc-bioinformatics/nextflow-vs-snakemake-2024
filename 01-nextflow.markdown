@@ -5,7 +5,7 @@ permalink: /nextflow/
 ---
 
 <nav>
-  <h4>Table of Contents</h4>
+  <h4>**Contents**</h4>
   * toc goes here
   {:toc}
 </nav>
