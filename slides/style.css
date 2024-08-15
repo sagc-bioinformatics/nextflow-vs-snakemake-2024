@@ -1,0 +1,25 @@
+
+html, body {
+  background-color: #fff;
+  color: #000;
+}
+
+img {
+    height: 50%;
+    max-width: 100%;
+    max-height: 70vh;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  height: 100%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+} 
+

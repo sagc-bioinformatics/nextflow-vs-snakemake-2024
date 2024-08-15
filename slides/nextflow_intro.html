@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="John Salamon" />
+  <title>Nextflow Introduction</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+   href="style.css" />
+  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Nextflow Introduction</h1>
+  <p class="author">
+John Salamon
+  </p>
+  <p class="date">Aug 28, 2024</p>
+</div>
+<div id="a-brief-history-of-nextflow" class="slide section level1">
+<h1>A brief history of Nextflow</h1>
+<div>
+<ul class="incremental">
+<li>2013: Nextflow, created by Paolo Di Tommaso, is publicly released <a
+href="https://elifesciences.org/labs/d193babe/the-story-of-nextflow-building-a-modern-pipeline-orchestrator">(article
+on history)</a></li>
+<li>2017: Article published in Nature Biotechnology <a
+href="https://www.nature.com/articles/nbt.3820">(Di Tommaso <em>et
+al</em> 2017)</a></li>
+<li>2018: The <a
+href="https://nf-co.re/about#history-of-nf-core">nf-core community
+project</a> led by Phil Ewels is started</li>
+<li>2018: Seqera Labs is launched, which Ziad can tell you more about
+later</li>
+<li>2020: Nextflow DSL2 is released, a major revamp of the language</li>
+<li>2024: As of today, the latest stable release of Nextflow is <a
+href="https://www.nextflow.io/blog/2024/nextflow-2404-highlights.html">24.04</a></li>
+</ul>
+</div>
+</div>
+<div id="problems-nextflow-aims-to-solve" class="slide section level1">
+<h1>Problems Nextflow aims to solve</h1>
+<ul class="incremental">
+<ul>
+<li>Complicated workflows are hard to maintain and share
+<ul>
+<li>How do you reproduce the setup of all the different software your
+worflow requires?</li>
+<li>If you want to run your workflow on a different environment, how do
+you do that?</li>
+</ul></li>
+</ul>
+</ul>
+<ul class="incremental">
+<ul>
+<li>If your workflow crashes, it can be hard to recover
+<ul>
+<li>How can you have confidence that the workflow has completed
+correctly?</li>
+<li>If you need to change something in your workflow, how do you know
+what needs to be rerun?</li>
+</ul></li>
+</ul>
+</ul>
+<ul class="incremental">
+<ul>
+<li>It’s difficult to monitor execution and resource utilisation
+<ul>
+<li>How do you track the progress of your workflow?</li>
+<li>How do you know if you’ve allocated excessive computational
+resources?</li>
+</ul></li>
+</ul>
+</ul>
+</div>
+<div id="how-nextflow-aims-to-solve-these-problems"
+class="slide section level1">
+<h1>How Nextflow aims to solve these problems</h1>
+<ul class="incremental">
+<ul>
+<li><strong>Reproducibility and portability</strong>
+<ul>
+<li>Nextflow is built with containers and version control in mind</li>
+<li>Docker, Singularity, podman, even just a conda env - managing your
+environment setup is a single line</li>
+<li>Configuration of HPC schedulers, cloud credentials, etc is
+independent of your workflow, Nextflow manages this all for you</li>
+</ul></li>
+</ul>
+</ul>
+<ul class="incremental">
+<ul>
+<li><strong>Familiar tools</strong>
+<ul>
+<li>You can use all of them same bioinformatics command line tools you
+are familiar with</li>
+<li>You can write scripts in any language you like, Nextflow just
+orchestrates the execution</li>
+</ul></li>
+</ul>
+</ul>
+<ul class="incremental">
+<ul>
+<li><strong>Dataflow programming paradigm</strong>
+<ul>
+<li>Each task (a process in Nextflow lingo) is totally independent, and
+has specific inputs and outputs</li>
+<li>A workflow describes which tasks data must flow through as a graph
+(specifically a DAG) of connected tasks</li>
+<li>In Nextflow the connections between these tasks are called
+channels</li>
+</ul></li>
+</ul>
+</ul>
+</div>
+<div id="core-concepts-workflow-channel-process"
+class="slide section level1">
+<h1>Core concepts (Workflow, Channel, Process)</h1>
+<div class="row">
+<div class="column">
+<ul>
+<li>A Nextflow <a
+href="https://www.nextflow.io/docs/latest/workflow.html"><strong>workflow</strong></a>
+explicitly describes how <a
+href="https://www.nextflow.io/docs/latest/process.html"><strong>processes</strong></a>
+(tasks) are connected
+<ul>
+<li>Every process is a self-contained black box</li>
+<li>A process can run as soon as all of its inputs are valid</li>
+<li>Processes always run in <em>parallel</em></li>
+</ul></li>
+<li>Processes are connected by <a
+href="https://www.nextflow.io/docs/latest/channel.html"><strong>channels</strong></a>
+<ul>
+<li>Every input and output of a process is a channel</li>
+<li>Usually channels contain files</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img src="./workflow.png" /></p>
+</div>
+</div>
+</div>
+<div id="core-concepts-operators" class="slide section level1">
+<h1>Core concepts (Operators)</h1>
+<ul>
+<li>Within workflows, <a
+href="https://www.nextflow.io/docs/latest/operator.html"><strong>operators</strong></a>
+can manipulate channels
+<ul>
+<li>e.g., <a
+href="https://www.nextflow.io/docs/latest/operator.html#collect"><em>collect</em></a>
+each item into a list</li>
+</ul></li>
+<li>The <em>pipe</em> (<code>|</code>) is a special operator, and it
+works just like a pipe in bash
+<ul>
+<li>You can pipe from any process/operator with one output channel to
+any process/operator with one input channel</li>
+</ul></li>
+<li>TODO: show picture of branching, show picture of pipe</li>
+</ul>
+<pre><code># Piping
+A | B | C
+
+# Versus, more procedural style (same outcome)
+ch_out = A()
+ch_out_2 = B(ch_out)
+C(ch_out_2)</code></pre>
+</div>
+<div id="implementation-details" class="slide section level1">
+<h1>Implementation details</h1>
+<ul>
+<li>Nextflow is a DSL, implemented in the Groovy programming
+language.</li>
+<li>Nextflow inherits nearly all of its syntax directly from Groovy, so
+knowing it is helpful
+<ul>
+<li>Groovy is more or less a superset of Java, so knowing Java also
+doesn’t hurt</li>
+</ul></li>
+<li>On a surface level Nextflow code looks similar to Python. Here are a
+few quick tips:</li>
+</ul>
+<pre><code>// Use two forward slashes for single line comments
+// Assign variables like this:
+x = 2
+
+// define Lists
+myList = [1,2,3]
+// and Maps
+myMap = [&quot;key&quot;: &quot;value&quot;]
+
+// access object methods and attributes with a dot
+myList.size() // returns 3
+
+// parentheses can be omitted for single parameter functions 
+// e.g., the following two lines are equivalent:
+println(&quot;hello world&quot;)
+println &quot;hello world
+</code></pre>
+<ul>
+<li>Read more: <a
+href="https://www.nextflow.io/docs/latest/script.html#groovy-basics">Groovy
+basics</a>, <a
+href="https://www.nextflow.io/docs/latest/overview.html">Nextflow docs
+overview</a></li>
+</ul>
+</div>
+<div id="getting-started" class="slide section level1">
+<h1>Getting started</h1>
+<ul>
+<li>Nextflow code is written in <code>.nf</code> files</li>
+<li>Let’s start with an empty workflow definition. Create
+<code>main.nf</code>:</li>
+</ul>
+<pre><code>workflow {
+
+}</code></pre>
+</div>
+<div id="running-our-workflow" class="slide section level1">
+<h1>Running our workflow</h1>
+<ul>
+<li>To run a Nextflow pipeline on the cli, you need to use the
+<code>nextflow</code> command</li>
+<li>This is already set up on your VMs</li>
+<li>Run your workflow by typing <code>nextflow run main.nf</code>:</li>
+</ul>
+<pre><code> N E X T F L O W   ~  version 24.04
+
+Launching `main.nf` [exotic_brenner] DSL2 - revision: 11d0d8e692</code></pre>
+<ul>
+<li>What happened?
+<ul>
+<li><code>.nextflow.log</code> was created</li>
+<li><code>work/</code> directory was created</li>
+</ul></li>
+</ul>
+</div>
+<div id="adding-a-process" class="slide section level1">
+<h1>Adding a process</h1>
+<ul>
+<li>Now let’s add a process. We can add this anywhere in
+<code>main.nf</code>, just not inside the workflow definition:</li>
+</ul>
+<pre><code>process EXAMPLE {
+    &quot;echo hello &gt; out.txt&quot;
+}
+
+workflow {
+    EXAMPLE()
+}</code></pre>
+<ul>
+<li>A process can consist of a nothing more than a string containing
+some code, to be executed by <code>bash</code> by default</li>
+<li>By convention, process names tend to be upper case, we’ve named ours
+EXAMPLE</li>
+<li>We’ve <em>invoked</em> the process like it’s a function in our
+workflow
+<ul>
+<li>Critically, although the syntax is similar, this is not the same
+thing as calling a function</li>
+</ul></li>
+</ul>
+</div>
+<div id="running-our-process-again" class="slide section level1">
+<h1>Running our process again</h1>
+<ul>
+<li>We can re-run our workflow: <code>nextflow run main.nf</code>:</li>
+</ul>
+<pre><code> N E X T F L O W   ~  version 24.04.2
+
+Launching `main.nf` [romantic_snyder] DSL2 - revision: 5ef5ed8a25
+
+executor &gt;  local (1)
+[ee/c693f3] EXAMPLE [100%] 1 of 1 ✔</code></pre>
+<ul>
+<li>Nextflow gives us a summary of which processes were run</li>
+<li>Why does EXAMPLE run?
+<ul>
+<li>There is no input defined, so as per the dataflow paradigm, it can
+run immediately (all inputs are valid)</li>
+</ul></li>
+<li>The output of our process is found in an isolated subdirectory of
+<code>work/</code>:</li>
+</ul>
+<pre><code>work/
+└── ee
+    └── c693f3241dcd5e3576e575b62ce5e8
+        └── out.txt</code></pre>
+<ul>
+<li>we know what is stored under <code>work/</code> by inspecting the
+process hash (you can see those as you run the pipeline)</li>
+</ul>
+</div>
+<div id="checking-logs-of-previous-executions"
+class="slide section level1">
+<h1>Checking logs of previous executions</h1>
+<ul>
+<li>Use <code>nextflow log</code> to see the log of previous executions
+of your script</li>
+<li>each <em>execution</em> of our script is assigned a
+randomly-generated <em>run_name</em></li>
+<li>Inspect details of a specific execution:</li>
+</ul>
+<pre><code>$ nextflow log romantic_snyder -f &#39;process,exit,hash,duration&#39;
+EXAMPLE 0   ee/c693f3   6ms</code></pre>
+<ul>
+<li>See available fields with <code>nextflow log -l</code></li>
+</ul>
+</div>
+<div id="defining-inputs" class="slide section level1">
+<h1>Defining inputs</h1>
+<ul>
+<li>We can define our process’s inputs with an <a
+href="https://www.nextflow.io/docs/latest/process.html#inputs"><em>input
+block</em></a>:</li>
+</ul>
+<pre><code>process EXAMPLE {
+    
+    input:
+    val msg
+
+    &quot;echo $msg &gt; out.txt&quot;
+}</code></pre>
+<ul>
+<li><a
+href="https://www.nextflow.io/docs/latest/process.html#input-type-val">the
+<code>val</code> input type</a> can be any type (string, integer,
+etc)</li>
+<li>our input is named “msg”</li>
+<li>the value of <code>msg</code> is inserted into our script string
+using the dollar sign: <code>$msg</code></li>
+</ul>
+</div>
+<div id="defining-outputs" class="slide section level1">
+<h1>Defining outputs</h1>
+<ul>
+<li><a
+href="https://www.nextflow.io/docs/latest/process.html#input-type-path">the
+<code>path</code> input type</a> represents a file or directory
+path</li>
+</ul>
+<pre><code>process EXAMPLE {
+
+    input:
+    val msg
+
+    output:
+    path &quot;out.txt&quot;
+
+    &quot;echo $msg &gt; out.txt&quot;
+}</code></pre>
+<ul>
+<li>We declare the name of our output file, “out.txt”</li>
+<li>This file will be emitted by our output channel</li>
+</ul>
+</div>
+<div id="script-block" class="slide section level1">
+<h1>Script block</h1>
+<ul>
+<li>We can omit explicitly typing script as long as it is the last line
+in the process</li>
+<li>We can make the script multi-line, with <code>"""</code></li>
+<li>We can actually use any code, as long as it returns a String at the
+end</li>
+</ul>
+<pre><code>process EXAMPLE {
+
+    input:
+    val msg
+
+    output:
+    path &quot;out.txt&quot;
+    
+    script:
+    &quot;&quot;&quot;
+    echo $msg &gt; out.txt
+    &quot;&quot;&quot;
+}</code></pre>
+</div>
+<div id="defining-channels-in-our-workflow"
+class="slide section level1">
+<h1>Defining channels in our workflow</h1>
+<ul>
+<li>We can pass an input value directly to our process, which implicitly
+creates a <a
+href="https://www.nextflow.io/docs/latest/channel.html#value-channel"><em>value
+channel</em></a>:</li>
+</ul>
+<pre><code>workflow {
+    EXAMPLE( &quot;hello world&quot; )
+}</code></pre>
+<ul>
+<li>Here’s the same thing stated explicitly using <a
+href="https://www.nextflow.io/docs/latest/channel.html#channel-factories">channel
+factory methods</a>:</li>
+</ul>
+<pre><code>workflow {
+   
+    ch_input = channel.value( &quot;hello world&quot; ) 
+    EXAMPLE( ch_input )
+}</code></pre>
+<ul>
+<li>The other main type of channel is a <a
+href="https://www.nextflow.io/docs/latest/channel.html#queue-channel">queue
+channel</a>, which we need to create explicitly:</li>
+</ul>
+<pre><code>workflow {
+   
+    ch_input = channel.of( &quot;one&quot;, &quot;two&quot;, &quot;three&quot; )
+    EXAMPLE(ch_input)
+}</code></pre>
+</div>
+<div id="in-the-next-section" class="slide section level1">
+<h1>In the next section</h1>
+<ul>
+<li>Let’s start building our pipeline!</li>
+</ul>
+<meta name="copyright" 
+content="Nextflow Introduction"/>
+</div>
+</body>
+</html>
