@@ -6,7 +6,9 @@ layout: home
 title: Schedule
 ---
 
-**Thursday, August 28th, 2024**
+Where: **Center for Cancer Biology, 8th Floor, [UniSA Bradley Building, North Terrace](https://maps.app.goo.gl/iusPfQeSSCARKinKA)**
+
+When: **Thursday, August 28th, 2024**
 
 | Time  | Topic                                 |
 |:------|---------------------------------------|
@@ -22,6 +24,8 @@ title: Schedule
 | 3:45  | Seqera Platform demo                  |
 | 4:00  | Wrap up                               |
 
+
+![](img/orgs.png)
 
 [View source code of this site](https://github.com/sagc-bioinformatics/nextflow-vs-snakemake-2024)
 
