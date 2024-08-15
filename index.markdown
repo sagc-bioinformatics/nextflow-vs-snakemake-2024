@@ -6,6 +6,7 @@ layout: home
 title: Schedule
 ---
 
+**Thursday, August 28th, 2024**
 
 | Time  | Topic                                 |
 |:------|---------------------------------------|
