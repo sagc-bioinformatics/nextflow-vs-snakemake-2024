@@ -22,7 +22,7 @@ When: **Thursday, August 28th, 2024**
 | 2:00  | Afternoon tea                         |
 | 2:15  | [Nextflow part 2](nextflow/#part-2)   |
 | 3:45  | Seqera Platform demo                  |
-| 4:00  | Wrap up                               |
+| 4:30  | Wrap up                               |
 
 
 ![](img/orgs.png)
