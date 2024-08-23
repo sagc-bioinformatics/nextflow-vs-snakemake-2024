@@ -76,7 +76,7 @@ sudo apt install openssh-client
 You will need to do some text editing during the workshop. 
 If you are comfortable with Linux CLI text editors (e.g. vim, nano), feel free to ignore this part. 
 
-If you would like to use a text editor, then we recommend using installing Visual Studio Code (https://code.visualstudio.com/), and also the official SSH extension (Remote-SSH).
+If you would like to use a text editor, then we recommend using installing [Visual Studio Code](https://code.visualstudio.com/), and also the official SSH extension (Remote-SSH).
 
 In short:
 
@@ -90,8 +90,8 @@ After extension is installed, to connect to a remote server:
 2. Enter "[username]@[host.ip.address]
 
 See these articles for more details:
-https://code.visualstudio.com/docs/remote/ssh-tutorial
-https://code.visualstudio.com/docs/remote/ssh
+[https://code.visualstudio.com/docs/remote/ssh-tutorial]()
+[https://code.visualstudio.com/docs/remote/ssh]()
 
 If using VSCode, You may also find the [Nextflow language plugin](https://marketplace.visualstudio.com/items?itemName=nextflow.nextflow) helpful.
 
