@@ -2,6 +2,7 @@
 % John Salamon
 % Aug 28, 2024
 
+
 # A brief history of Nextflow
 
 ::: incremental
