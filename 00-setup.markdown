@@ -90,8 +90,8 @@ After extension is installed, to connect to a remote server:
 2. Enter "[username]@[host.ip.address]
 
 See these articles for more details:
-[https://code.visualstudio.com/docs/remote/ssh-tutorial]()
-[https://code.visualstudio.com/docs/remote/ssh]()
+- [https://code.visualstudio.com/docs/remote/ssh-tutorial]()
+- [https://code.visualstudio.com/docs/remote/ssh]()
 
 If using VSCode, You may also find the [Nextflow language plugin](https://marketplace.visualstudio.com/items?itemName=nextflow.nextflow) helpful.
 
@@ -99,6 +99,6 @@ If using VSCode, You may also find the [Nextflow language plugin](https://market
 
 We will be using Slack for some communication before and during the workshop. 
 
-If you have an account on the Adelaide Bioinformatics Hub slack workspace (bioinformaticshubsa.slack.com), please go ahead and join the #nextflow-snakemake-24 channel.
+If you have an account on the Adelaide Bioinformatics Hub slack workspace ([bioinformaticshubsa.slack.com]()), please go ahead and join the [#nextflow-snakemake-24](bioinformaticshubsa.slack.com#nextflow-snakemake-24) channel.
 
 If you are not yet part of the workspace, please contact one of the event organisers.
