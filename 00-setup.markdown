@@ -76,7 +76,7 @@ sudo apt install openssh-client
 You will need to do some text editing during the workshop. 
 If you are comfortable with Linux CLI text editors (e.g. vim, nano), feel free to ignore this part. 
 
-If you would like to use a text editor, then we recommend using installing [Visual Studio Code](https://code.visualstudio.com/), and also the official SSH extension (Remote-SSH).
+If you would like to use a GUI text editor, we recommend using installing [Visual Studio Code](https://code.visualstudio.com/), and also the official SSH extension (Remote-SSH).
 
 In short:
 
