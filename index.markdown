@@ -27,6 +27,8 @@ When: **Thursday, August 28th, 2024**
 
 ![](img/orgs.png)
 
+**QR code of link to this site:**
+
 ![](img/QR.png)
 
 
