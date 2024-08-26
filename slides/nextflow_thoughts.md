@@ -1,3 +1,6 @@
+% Nextflow Thoughts (jekyll please don't make this a page)
+% John Salamon
+% Aug 28, 2024
 
 
 # Parsing vs. running and order of execution
