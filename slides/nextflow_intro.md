@@ -23,7 +23,7 @@
 
 <ul class="incremental">
 - Complicated workflows are hard to maintain and share
-    - How do you reproduce the setup of all the different software your worflow requires?
+    - How do you reproduce the setup of all the different software your workflow requires?
     - If you want to run your workflow on a different environment, how do you do that?
 </ul>
 <ul class="incremental">
@@ -88,9 +88,6 @@
 - The *pipe* (`|`) is a special operator, and it works just like a pipe in bash
     - You can pipe from any process/operator with one output channel to any process/operator with one input channel
 
-
-- TODO: show picture of branching, show picture of pipe
-
 ```
 # Piping
 A | B | C
@@ -124,7 +121,7 @@ myList.size() // returns 3
 // parentheses can be omitted for single parameter functions 
 // e.g., the following two lines are equivalent:
 println("hello world")
-println "hello world
+println "hello world"
 
 ```
 
