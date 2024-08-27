@@ -8,7 +8,7 @@ title: Schedule
 
 Where: **Center for Cancer Biology, 8th Floor, [UniSA Bradley Building, North Terrace](https://maps.app.goo.gl/iusPfQeSSCARKinKA)**
 
-When: **Thursday, August 28th, 2024**
+When: **Wednesday, August 28th, 2024**
 
 | Time  | Topic                                 |
 |:------|---------------------------------------|
