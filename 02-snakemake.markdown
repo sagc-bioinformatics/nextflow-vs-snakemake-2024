@@ -13,6 +13,11 @@ permalink: /snakemake/
 
 # Part 1
 
+By the end of this tutorial you should be able to generate a Snakemake version of our template bash script.
+Scroll to the end of part 2 for my attempt at the Snakemake conversion.
+
+## Inspiration
+
 Snakemake gets its inspiration from the program _Make_.
 _Make_ is an old program that was originally designed to compile and install software.
 It was appropriated by bioinformaticians because the program is ideal for writing pipelines.
@@ -1147,3 +1152,7 @@ sample_dictionary = {}
 for sample in sample_list:
     sample_dictionary[sample] = os.path.join(config['sample_dir'],f'{sample}.fastq')
 ```
+
+## Example pipeline
+
+[Here is the Snakemake version of the template bash script](https://github.com/beardymcjohnface/snakemake-example-workflow-2024)
