@@ -19,6 +19,32 @@
 [2]: https://nf-co.re/about#history-of-nf-core
 [3]: https://www.nextflow.io/blog/2024/nextflow-2404-highlights.html
 
+# High level comparison with Snakemake
+
+|                  | Nextflow        | Snakemake     |
+|------------------|-----------------|---------------|
+| Language extends | Groovy          | Python        |
+| DAG is defined   | Explicitly      | Implicitly    |
+| Root of graph is | Inputs          | Outputs       |
+| History          | More commercial | More academic |
+
+# Paradigms
+
+Snakemake - makefile style (start by naming outputs)
+ - define multiple rules
+ - naming a target then generates your DAG by combining rules
+ - your workflow structure is *implicit*
+
+Nextflow - dataflow programming (start by naming inputs)
+ - define multiple processes
+ - join them together in a workflow, *explicity*
+ - You just provide inputs and everything runs
+
+# nf-core
+
+- 100+ pipelines, and 1000+ modules, are publicly available via [nf-core](https://nf-co.re/)
+- Large community, comes with its own specific tooling and templates, as well as configuration profiles for many institutions and platforms
+
 # Problems Nextflow aims to solve
 
 <ul class="incremental">
@@ -56,7 +82,6 @@
     - A workflow describes which tasks data must flow through as a graph (specifically a DAG) of connected tasks
     - In Nextflow the connections between these tasks are called channels
 </ul>
-
 
 # Core concepts (Workflow, Channel, Process)
 
