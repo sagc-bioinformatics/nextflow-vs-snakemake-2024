@@ -138,18 +138,19 @@ println "hello world"
 | DAG is defined   | Explicitly      | Implicitly    |
 | Root of graph is | Inputs          | Outputs       |
 | History          | More commercial | More academic |
+| Community on     | Slack           | Discord       |
 
 # Paradigms
 
-Snakemake - makefile style (start by naming outputs)
- - define multiple rules
- - naming a target then generates your DAG by combining rules
- - your workflow structure is *implicit*
+- Snakemake - makefile style (start by naming outputs)
+  - define multiple rules
+  - naming a target then generates your DAG by combining rules
+  - your workflow structure is *implicit*
 
-Nextflow - dataflow programming (start by naming inputs)
- - define multiple processes
- - join them together in a workflow, *explicity*
- - You just provide inputs and everything runs
+- Nextflow - dataflow programming (start by naming inputs)
+  - define multiple processes
+  - join them together in a workflow, *explicity*
+  - You just provide inputs and everything runs
 
 # nf-core
 
