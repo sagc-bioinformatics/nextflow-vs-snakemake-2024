@@ -19,7 +19,8 @@ permalink: /nextflow/
 
 In part 1 we'll start with a conceptual overview, getting to know how to use Nextflow from the command line, and learning to create an empty workflow.
 
-- <a href="/nextflow-vs-snakemake-2024/slides/nextflow_intro" target="_blank">Intro slides for part 1</a>
+- <a href="/nextflow-vs-snakemake-2024/slides/nextflow_intro" target="_blank">Intro slides</a>
+- <a href="/nextflow-vs-snakemake-2024/slides/basic_workflow" target="_blank">Making a basic workflow</a>
 
 # Part 2
 

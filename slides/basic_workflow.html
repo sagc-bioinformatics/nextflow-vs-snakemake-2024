@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="John Salamon" />
+  <title>Writing a basic workflow</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+   href="style.css" />
+  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Writing a basic workflow</h1>
+  <p class="author">
+John Salamon
+  </p>
+  <p class="date">Aug 28, 2024</p>
+</div>
+<div id="getting-started" class="slide section level1">
+<h1>Getting started</h1>
+<ul>
+<li>Nextflow code is written in <code>.nf</code> files</li>
+<li>Let’s start with an empty workflow definition. Create
+<code>main.nf</code>:</li>
+</ul>
+<pre><code>workflow {
+
+}</code></pre>
+</div>
+<div id="running-our-workflow" class="slide section level1">
+<h1>Running our workflow</h1>
+<ul>
+<li>To run a Nextflow pipeline on the cli, you need to use the
+<code>nextflow</code> command</li>
+<li>This is already set up on your VMs</li>
+<li>Run your workflow by typing <code>nextflow run main.nf</code>:</li>
+</ul>
+<pre><code> N E X T F L O W   ~  version 24.04
+
+Launching `main.nf` [exotic_brenner] DSL2 - revision: 11d0d8e692</code></pre>
+<ul>
+<li>What happened?
+<ul>
+<li><code>.nextflow.log</code> was created</li>
+<li><code>work/</code> directory was created</li>
+</ul></li>
+</ul>
+</div>
+<div id="adding-a-process" class="slide section level1">
+<h1>Adding a process</h1>
+<ul>
+<li>Now let’s add a process. We can add this anywhere in
+<code>main.nf</code>, just not inside the workflow definition:</li>
+</ul>
+<pre><code>process EXAMPLE {
+    &quot;echo hello &gt; out.txt&quot;
+}
+
+workflow {
+    EXAMPLE()
+}</code></pre>
+<ul>
+<li>A process can consist of a nothing more than a string containing
+some code, to be executed by <code>bash</code> by default</li>
+<li>By convention, process names tend to be upper case, we’ve named ours
+EXAMPLE</li>
+<li>We’ve <em>invoked</em> the process like it’s a function in our
+workflow
+<ul>
+<li>Critically, although the syntax is similar, this is not the same
+thing as calling a function</li>
+</ul></li>
+</ul>
+</div>
+<div id="running-our-process-again" class="slide section level1">
+<h1>Running our process again</h1>
+<ul>
+<li>We can re-run our workflow: <code>nextflow run main.nf</code>:</li>
+</ul>
+<pre><code> N E X T F L O W   ~  version 24.04.2
+
+Launching `main.nf` [romantic_snyder] DSL2 - revision: 5ef5ed8a25
+
+executor &gt;  local (1)
+[ee/c693f3] EXAMPLE [100%] 1 of 1 ✔</code></pre>
+<ul>
+<li>Nextflow gives us a summary of which processes were run</li>
+<li>Why does EXAMPLE run?
+<ul>
+<li>There is no input defined, so as per the dataflow paradigm, it can
+run immediately (all inputs are valid)</li>
+</ul></li>
+<li>The output of our process is found in an isolated subdirectory of
+<code>work/</code>:</li>
+</ul>
+<pre><code>work/
+└── ee
+    └── c693f3241dcd5e3576e575b62ce5e8
+        └── out.txt</code></pre>
+<ul>
+<li>we know what is stored under <code>work/</code> by inspecting the
+process hash (you can see those as you run the pipeline)</li>
+</ul>
+</div>
+<div id="checking-logs-of-previous-executions"
+class="slide section level1">
+<h1>Checking logs of previous executions</h1>
+<ul>
+<li>Use <code>nextflow log</code> to see the log of previous executions
+of your script</li>
+<li>each <em>execution</em> of our script is assigned a
+randomly-generated <em>run_name</em></li>
+<li>Inspect details of a specific execution:</li>
+</ul>
+<pre><code>$ nextflow log romantic_snyder -f &#39;process,exit,hash,duration&#39;
+EXAMPLE 0   ee/c693f3   6ms</code></pre>
+<ul>
+<li>See available fields with <code>nextflow log -l</code></li>
+</ul>
+</div>
+<div id="defining-inputs" class="slide section level1">
+<h1>Defining inputs</h1>
+<ul>
+<li>We can define our process’s inputs with an <a
+href="https://www.nextflow.io/docs/latest/process.html#inputs"><em>input
+block</em></a>:</li>
+</ul>
+<pre><code>process EXAMPLE {
+    
+    input:
+    val msg
+
+    &quot;echo $msg &gt; out.txt&quot;
+}</code></pre>
+<ul>
+<li><a
+href="https://www.nextflow.io/docs/latest/process.html#input-type-val">the
+<code>val</code> input type</a> can be any type (string, integer,
+etc)</li>
+<li>our input is named “msg”</li>
+<li>the value of <code>msg</code> is inserted into our script string
+using the dollar sign: <code>$msg</code></li>
+</ul>
+</div>
+<div id="defining-outputs" class="slide section level1">
+<h1>Defining outputs</h1>
+<ul>
+<li><a
+href="https://www.nextflow.io/docs/latest/process.html#input-type-path">the
+<code>path</code> input type</a> represents a file or directory
+path</li>
+</ul>
+<pre><code>process EXAMPLE {
+
+    input:
+    val msg
+
+    output:
+    path &quot;out.txt&quot;
+
+    &quot;echo $msg &gt; out.txt&quot;
+}</code></pre>
+<ul>
+<li>We declare the name of our output file, “out.txt”</li>
+<li>This file will be emitted by our output channel</li>
+</ul>
+</div>
+<div id="script-block" class="slide section level1">
+<h1>Script block</h1>
+<ul>
+<li>We can omit explicitly typing script as long as it is the last line
+in the process</li>
+<li>We can make the script multi-line, with <code>"""</code></li>
+<li>We can actually use any code, as long as it returns a String at the
+end</li>
+</ul>
+<pre><code>process EXAMPLE {
+
+    input:
+    val msg
+
+    output:
+    path &quot;out.txt&quot;
+    
+    script:
+    &quot;&quot;&quot;
+    echo $msg &gt; out.txt
+    &quot;&quot;&quot;
+}</code></pre>
+</div>
+<div id="defining-channels-in-our-workflow"
+class="slide section level1">
+<h1>Defining channels in our workflow</h1>
+<ul>
+<li>We can pass an input value directly to our process, which implicitly
+creates a <a
+href="https://www.nextflow.io/docs/latest/channel.html#value-channel"><em>value
+channel</em></a>:</li>
+</ul>
+<pre><code>workflow {
+    EXAMPLE( &quot;hello world&quot; )
+}</code></pre>
+<ul>
+<li>Here’s the same thing stated explicitly using <a
+href="https://www.nextflow.io/docs/latest/channel.html#channel-factories">channel
+factory methods</a>:</li>
+</ul>
+<pre><code>workflow {
+   
+    ch_input = channel.value( &quot;hello world&quot; ) 
+    EXAMPLE( ch_input )
+}</code></pre>
+<ul>
+<li>The other main type of channel is a <a
+href="https://www.nextflow.io/docs/latest/channel.html#queue-channel">queue
+channel</a>, which we need to create explicitly:</li>
+</ul>
+<pre><code>workflow {
+   
+    ch_input = channel.of( &quot;one&quot;, &quot;two&quot;, &quot;three&quot; )
+    EXAMPLE(ch_input)
+}</code></pre>
+</div>
+<div id="order-of-execution-is-not-guaranteed"
+class="slide section level1">
+<h1>Order of execution is not guaranteed</h1>
+<p>Let’s try adding in the <code>view</code> operator and
+<code>println</code> function in different places…</p>
+</div>
+<div id="in-the-next-section" class="slide section level1">
+<h1>In the next section</h1>
+<ul>
+<li>Let’s start building a proper pipeline!</li>
+</ul>
+<meta name="copyright" 
+content="Basic workflow"/>
+</div>
+</body>
+</html>

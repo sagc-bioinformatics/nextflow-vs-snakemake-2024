@@ -39,7 +39,7 @@ body:after {
 }
 
 body:before {
-    content: 'Nextflow vs Snakemake 2024 - Nextflow intro';
+    content: 'Nextflow vs Snakemake 2024';
     position: fixed;
     top: 0;
     left: 80px;
