@@ -82,11 +82,11 @@ In short:
 
 1. Download and install VS Code (available for Windows, Mac, and various Linux OSes).
 2. Start VS Code, install Remote-SSH extension. 
-   * Press F1, search for "Extensions: install extensions"
+   * Press F1 or Ctrl+Shift+P, search for "Extensions: install extensions"
    * search for "Remote-SSH", click on "install"
 
 After extension is installed, to connect to a remote server:
-1. Press F1, search for "Remote-SSH: Connect to Host..."
+1. Press F1 or Ctrl+Shift+P, search for "Remote-SSH: Connect to Host..."
 2. Enter "[username]@[host.ip.address]
 
 See these articles for more details:

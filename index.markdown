@@ -27,5 +27,10 @@ When: **Wednesday, August 28th, 2024**
 
 ![](img/orgs.png)
 
+**QR code of link to this site:**
+
+![](img/QR.png)
+
+
 [View source code of this site](https://github.com/sagc-bioinformatics/nextflow-vs-snakemake-2024)
 
