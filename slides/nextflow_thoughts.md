@@ -15,6 +15,9 @@
 - I'll demonstrate with some `println`s
 - demonstrate view, and demonstrate looking inside text
 
+- Running relative to nextflow directory
+- bin, templates, and lib directories
+
 # 
 
 - params, configs, more complex operators, executors
@@ -152,3 +155,10 @@ and then also, if we have 4 cores, and set fastp -w flag properly, I think we'll
 | Community on     | Slack           | Distributed?  |
 
 
+# Modularisation
+
+- You can [include](`https://www.nextflow.io/docs/latest/module.html`) Nextflow scripts from other files.
+
+# Dynamic issues
+
+- `.getClass()` can be handy

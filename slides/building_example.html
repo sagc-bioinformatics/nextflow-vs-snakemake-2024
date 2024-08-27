@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="John Salamon" />
+  <title>Creating our pipeline</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+   href="style.css" />
+  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Creating our pipeline</h1>
+  <p class="author">
+John Salamon
+  </p>
+  <p class="date">Aug 28, 2024</p>
+</div>
+<div id="creating-our-project-dir" class="slide section level1">
+<h1>Creating our project dir</h1>
+<ul>
+<li>It’s important to distinguish between launch vs project
+directories</li>
+<li>We can access the path to our project directory via <a
+href="https://www.nextflow.io/docs/latest/metadata.html">workflow
+introspection</a></li>
+<li>Special directories (<code>lib</code>, <code>bin</code>, and
+<code>templates</code>)
+<ul>
+<li>any Java or Groovy code you place in <code>lib</code> will be loaded
+in your pipeline</li>
+<li>any executables you place in <code>bin</code> can be executed in
+your scripts</li>
+<li>any scripts you place in <code>templates</code> can be executed
+using <code>script: template &lt;script&gt;</code>, instead of an
+in-line script.</li>
+</ul></li>
+</ul>
+</div>
+<div id="a-brief-word-on-configuration" class="slide section level1">
+<h1>A brief word on configuration</h1>
+<ul>
+<li>Configs use <code>key = value</code> syntax, and can be simplified
+with config scopes</li>
+<li>There is a <a
+href="https://www.nextflow.io/docs/latest/config.html">hierarchy of
+locations</a> that Nextflow will look in for config files.</li>
+<li>We’ll just make a basic <code>nextflow.config</code> in our project
+dir to set up the resources we want to allocate:</li>
+</ul>
+<pre><code>executor {
+    name = &#39;local&#39;
+    cpus = 2
+    memory = &#39;4 GB&#39;
+}</code></pre>
+<p>We can also specify our <code>conda</code> environment, if we
+wish:</p>
+<pre><code>conda.enabled = true
+
+// This is actually a per-process option, as we may have many different envs
+process.conda = &quot;assets/environment.yml&quot;</code></pre>
+</div>
+<div id="getting-files-as-inputs-and-using-params"
+class="slide section level1">
+<h1>Getting files as inputs, and using params</h1>
+<ul>
+<li>we can create pipeline parameters using <code>params</code>, and set
+a default</li>
+</ul>
+<pre><code>params.samplesheet = &#39;assets/samplesheet.csv&#39;</code></pre>
+<ul>
+<li>We can then modify this on the command line</li>
+</ul>
+<pre><code>nextflow main.nf --samplesheet &#39;assets/samplesheet.csv&#39;</code></pre>
+<ul>
+<li>channel factories like <code>fromPath</code> can create channels
+from files.</li>
+<li><code>view</code> lets us see the content of a channel</li>
+<li><code>map</code> to manipulate our channel with closures</li>
+<li>We could do basic reading of a samplesheet with
+<code>splitCsv</code>:</li>
+</ul>
+<pre><code>channel.of( file(&#39;samplesheet.csv&#39;) )
+        | splitCsv( header: true )</code></pre>
+</div>
+<div id="adding-metadata-to-channels" class="slide section level1">
+<h1>Adding metadata to channels</h1>
+<ul>
+<li>A super common pattern in Nextflow is use tuples to add sample
+metadata
+<ul>
+<li>Tuples ensure that our metadata and data stay linked</li>
+<li>They also let us keep only a single parameter</li>
+</ul></li>
+<li>The only difficulty is remembering the order of the tuples in
+outputs</li>
+<li>If you have many outputs in <em>different</em> channels, you can
+name them</li>
+</ul>
+<pre><code>input:
+tuple val(id), path(reads)
+
+output:
+tuple val(id), path(&#39;*.json&#39;), emit: json</code></pre>
+</div>
+<div id="specifying-resources-in-config" class="slide section level1">
+<h1>Specifying resources in config</h1>
+<ul>
+<li>Annotating processing with labels can allow you to apply rules to
+many processes at once. In process:</li>
+</ul>
+<pre><code>label &#39;process_low&#39;</code></pre>
+<ul>
+<li>In config:</li>
+</ul>
+<pre><code>process {
+    withLabel: &#39;process_low&#39; {
+        cpus = 1
+    }
+}</code></pre>
+<p>Config options can be accessed via <code>task</code>:</p>
+<pre><code>&quot;&quot;&quot;
+# map reads
+echo &quot;mapping reads&quot;
+minimap2 -t ${task.cpus} -a -x sr ${genome} ${reads} &gt; ${id}.sam 2&gt; ${id}.minimap2.log
+&quot;&quot;&quot;</code></pre>
+</div>
+<div id="getting-results-out" class="slide section level1">
+<h1>Getting results out</h1>
+<ul>
+<li>How do we make sure all our output is in the right place?</li>
+<li>A common method is to use <a
+href="https://www.nextflow.io/docs/latest/process.html#publishdir"><code>publishDir</code></a>:</li>
+</ul>
+<pre><code>publishDir &quot;${params.outdir}&quot;, pattern: &quot;*.html&quot;</code></pre>
+</div>
+</body>
+</html>
